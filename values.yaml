@@ -1,0 +1,103 @@
+# Global settings can be defined here
+
+# Configuration for postgres-users
+postgres-users:
+  enabled: true
+  auth:
+    database: mako_users
+    username: bank
+    password: "bankpw" # Replace with a value from a secret in production
+  primary:
+    persistence:
+      enabled: true
+      size: 1Gi
+
+# Configuration for postgres-accounts
+postgres-accounts:
+  enabled: true
+  auth:
+    database: mako_accounts
+    username: bank
+    password: "bankpw"
+  primary:
+    persistence:
+      enabled: true
+      size: 1Gi
+
+# Configuration for postgres-transactions
+postgres-transactions:
+  enabled: true
+  auth:
+    database: mako_transactions
+    username: bank
+    password: "bankpw"
+  primary:
+    persistence:
+      enabled: true
+      size: 1Gi
+
+# Configuration for postgres-notifications
+postgres-notifications:
+  enabled: true
+  auth:
+    database: mako_notifications
+    username: bank
+    password: "bankpw"
+  primary:
+    persistence:
+      enabled: true
+      size: 1Gi
+
+# Configuration for postgres-keycloak
+postgres-keycloak:
+  enabled: true
+  auth:
+    database: keycloak
+    username: keycloak
+    password: "keycloak"
+  primary:
+    persistence:
+      enabled: true
+      size: 1Gi
+
+# Configuration for Redis
+redis:
+  enabled: true
+  auth:
+    password: "redispw"
+  master:
+    persistence:
+      enabled: true
+      size: 1Gi
+
+# Configuration for Kafka
+kafka:
+  enabled: true
+  zookeeper:
+    persistence:
+      enabled: true
+      size: 1Gi
+  controller:
+    persistence:
+      enabled: true
+      size: 1Gi
+  broker:
+    persistence:
+      enabled: true
+      size: 1Gi
+
+# Configuration for Keycloak
+keycloak:
+  enabled: true
+  auth:
+    adminUser: admin
+    adminPassword: "admin"
+  externalDatabase:
+    host: postgres-keycloak-postgresql
+    user: keycloak
+    password: "keycloak"
+    database: keycloak
+  # In a real scenario, you would configure ingress here
+  # ingress:
+  #   enabled: true
+  #   hostname: keycloak.yourdomain.com
