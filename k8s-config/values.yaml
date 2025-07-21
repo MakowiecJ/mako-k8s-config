@@ -101,3 +101,12 @@ keycloak:
   # ingress:
   #   enabled: true
   #   hostname: keycloak.yourdomain.com
+
+# Configuration for NGINX Ingress Controller
+ingress-nginx:
+  enabled: true
+  controller:
+    service:
+      type: LoadBalancer
+    # In GKE Autopilot, the load balancer will be automatically provisioned
+    # and you'll get an external IP address
