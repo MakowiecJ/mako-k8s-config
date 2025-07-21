@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgres-accounts
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: postgresql
+    repoURL: https://charts.bitnami.com/bitnami
+    targetRevision: 12.12.10
+    helm:
+      values: |
+        auth:
+          database: mako_accounts
+          username: bank
+          password: "bankpw"
+        primary:
+          persistence:
+            enabled: true
+            size: 1Gi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: mako-accounts
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
