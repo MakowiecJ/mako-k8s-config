@@ -25,6 +25,7 @@ spec:
         ingress:
           enabled: true
           path: /
+          pathType: Prefix
         env:
           - name: SPRING_PROFILES_ACTIVE
             value: "gke"
