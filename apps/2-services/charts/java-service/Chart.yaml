@@ -1,0 +1,5 @@
+apiVersion: v2
+name: java-service
+description: A generic Helm chart for Mako Java microservices
+type: application
+version: 1.0.0

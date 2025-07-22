@@ -1,0 +1,24 @@
+# Default values for java-service chart.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: europe-central2-docker.pkg.dev/mako-bank/mako-images/placeholder
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: false
+  path: /
+  pathType: Prefix
+
+# Environment variables to be injected into the container
+env:
+  SPRING_PROFILES_ACTIVE: "gke"
+  # Add other common environment variables here
