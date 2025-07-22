@@ -16,7 +16,7 @@ spec:
         # Konfiguracja Image Updatera
         config:
           # Logowanie do Artifact Registry
-          registries: |
+          registries:
             - name: Google Container Registry
               api_url: https://europe-central2-docker.pkg.dev
               prefix: europe-central2-docker.pkg.dev
