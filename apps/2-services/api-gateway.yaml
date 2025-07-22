@@ -24,6 +24,9 @@ spec:
         ingress:
           enabled: true
           path: /
+        env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: "gke"
   destination:
     server: https://kubernetes.default.svc
     namespace: mako-services
