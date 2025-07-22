@@ -22,7 +22,6 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
-{{- if .Values.env }}
           env:
-{{ toYaml .Values.env | nindent 10 }}
-{{- end }}
+            - name: SPRING_PROFILES_ACTIVE
+              value: "gke"
