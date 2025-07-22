@@ -17,9 +17,6 @@ spec:
     path: apps/2-services/mako-api-gateway
     repoURL: git@github.com:MakowiecJ/mako-k8s-config.git
     targetRevision: HEAD
-    kustomize:
-      images:
-      - europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-api-gateway
   destination:
     server: https://kubernetes.default.svc
     namespace: mako-services
