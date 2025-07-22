@@ -8,7 +8,6 @@ metadata:
 spec:
   project: default
   source:
-    # Wskazujemy na folder z surowymi manifestami, a nie na szablon Helm
     path: apps/2-services/mako-api-gateway
     repoURL: https://github.com/MakowiecJ/mako-k8s-config.git
     targetRevision: HEAD
