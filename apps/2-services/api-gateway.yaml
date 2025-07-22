@@ -15,7 +15,7 @@ spec:
   project: default
   source:
     path: apps/2-services/mako-api-gateway
-    repoURL: https://github.com/MakowiecJ/mako-k8s-config.git
+    repoURL: git@github.com:MakowiecJ/mako-k8s-config.git
     targetRevision: HEAD
     kustomize:
       images:
