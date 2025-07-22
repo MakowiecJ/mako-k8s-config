@@ -18,7 +18,8 @@ ingress:
   path: /
   pathType: Prefix
 
-# Environment variables to be injected into the container
+# Environment variables to be injected into the container.
+# This is now a list of name/value pairs for better stability.
 env:
-  SPRING_PROFILES_ACTIVE: "gke"
-  # Add other common environment variables here
+  - name: SPRING_PROFILES_ACTIVE
+    value: "gke"
