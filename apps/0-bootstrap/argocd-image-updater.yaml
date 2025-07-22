@@ -25,10 +25,10 @@ spec:
         # Dane logowania do Git
         secrets:
           git:
-            # Nazwa sekretu, który utworzymy w następnym kroku
-            name: argocd-image-updater-git-creds
+            # Nazwa sekretu, który przechowuje dane logowania do Git
+            name: argocd-git-creds
             # Klucz w sekrecie zawierający klucz prywatny SSH
-            key: ssh_private_key
+            key: sshPrivateKey
 
   destination:
     server: https://kubernetes.default.svc
