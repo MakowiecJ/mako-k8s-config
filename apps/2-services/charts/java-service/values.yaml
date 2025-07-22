@@ -1,25 +1,12 @@
-# Default values for java-service chart.
-# Declare variables to be passed into your templates.
-
+# Placeholder values. All real values will be provided by the ArgoCD Application manifest.
+name: "placeholder-name"
 replicaCount: 1
-
 image:
-  repository: europe-central2-docker.pkg.dev/mako-bank/mako-images/placeholder
+  repository: "placeholder-repo"
+  tag: "placeholder-tag"
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
-
 service:
-  type: ClusterIP
   port: 8080
-
-ingress:
-  enabled: false
-  path: /
-  pathType: Prefix
-
-# Environment variables to be injected into the container.
-# This is now a list of name/value pairs for better stability.
 env:
-  - name: SPRING_PROFILES_ACTIVE
-    value: "gke"
+  - name: EXAMPLE
+    value: "example"
