@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: mako-api-gateway
-          image: "europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-api-gateway:latest"
+          image: "europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-api-gateway"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8081
