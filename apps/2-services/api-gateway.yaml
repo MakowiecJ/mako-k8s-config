@@ -1,40 +1,40 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: mako-api-gateway
-  namespace: argocd
-  finalizers:
-  - resources-finalizer.argocd.argoproj.io
-spec:
-  project: default
-  source:
-    # Wskazujemy na nasz lokalny szablon
-    path: apps/2-services/charts/java-service
-    repoURL: https://github.com/MakowiecJ/mako-k8s-config.git
-    targetRevision: HEAD
-    helm:
-      # Nadpisujemy wartości domyślne z szablonu
-      values: |
-        replicaCount: 1
-        image:
-          repository: europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-api-gateway
-          tag: "latest"
-          pullPolicy: IfNotPresent
-        service:
-          port: 8081
-        ingress:
-          enabled: true
-          path: /
-          pathType: Prefix
-        env:
-          - name: SPRING_PROFILES_ACTIVE
-            value: "gke"
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: mako-services
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-    - CreateNamespace=true
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: mako-api-gateway
+#   namespace: argocd
+#   finalizers:
+#   - resources-finalizer.argocd.argoproj.io
+# spec:
+#   project: default
+#   source:
+#     # Wskazujemy na nasz lokalny szablon
+#     path: apps/2-services/charts/java-service
+#     repoURL: https://github.com/MakowiecJ/mako-k8s-config.git
+#     targetRevision: HEAD
+#     helm:
+#       # Nadpisujemy wartości domyślne z szablonu
+#       values: |
+#         replicaCount: 1
+#         image:
+#           repository: europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-api-gateway
+#           tag: "latest"
+#           pullPolicy: IfNotPresent
+#         service:
+#           port: 8081
+#         ingress:
+#           enabled: true
+#           path: /
+#           pathType: Prefix
+#         env:
+#           - name: SPRING_PROFILES_ACTIVE
+#             value: "gke"
+#   destination:
+#     server: https://kubernetes.default.svc
+#     namespace: mako-services
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#     - CreateNamespace=true
