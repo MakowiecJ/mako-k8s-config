@@ -3,6 +3,11 @@ kind: Application
 metadata:
   name: mako-api-gateway
   namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: mako-api-gateway=europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-api-gateway
+    argocd-image-updater.argoproj.io/mako-api-gateway.update-strategy: latest
+    argocd-image-updater.argoproj.io/mako-api-gateway.allow-tags: regexp:^.*
+    argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/argocd-image-updater-git-creds
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
