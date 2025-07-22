@@ -8,4 +8,4 @@ resources:
 images:
 - name: europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-api-gateway
   newName: europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-api-gateway
-  newTag: latest
+  newTag: placeholder
