@@ -8,7 +8,7 @@ metadata:
     argocd-image-updater.argoproj.io/mako-api-gateway.kustomize.image-name: europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-api-gateway
     argocd-image-updater.argoproj.io/mako-api-gateway.update-strategy: latest
     argocd-image-updater.argoproj.io/mako-api-gateway.allow-tags: regexp:^.*
-    argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/argocd-image-updater-git-creds
+    argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/argocd-git-creds
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
