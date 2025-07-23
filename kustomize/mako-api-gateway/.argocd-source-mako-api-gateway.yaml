@@ -1,3 +1,3 @@
 kustomize:
   images:
-  - europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-api-gateway=europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-api-gateway:027d86c8185b2d436cd10f45024580f0bf54253a
+  - europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-api-gateway=europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-api-gateway:fd9a885364c470995955f4739398650db833b9eb
