@@ -20,7 +20,7 @@ spec:
             - name: Google Container Registry
               api_url: https://europe-central2-docker.pkg.dev
               prefix: europe-central2-docker.pkg.dev
-              credentials: pullsecret:argocd/artifact-registry-key
+              credentials: gcp_service_account_key:secret:argocd/gcr-key-secret#key.json
 
         # Dane logowania do Git
         secrets:
