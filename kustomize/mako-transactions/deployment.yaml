@@ -28,10 +28,16 @@ spec:
             - name: SERVICES_USERS_URL
               value: "http://mako-users.mako-services.svc.cluster.local:8082/users"
             - name: SPRING_DATASOURCE_URL
-              value: "jdbc:postgresql://postgres-transactions-postgresql.mako-transactions.svc.cluster.local:5432/mako_transactions"
+              value: "jdbc:postgresql://cloudsql-proxy.mako-db.svc.cluster.local:5432/mako_bank?currentSchema=transactions"
             - name: SPRING_DATASOURCE_USERNAME
-              value: "bank"
+              valueFrom:
+                secretKeyRef:
+                  name: cloudsql-db-credentials
+                  key: username
             - name: SPRING_DATASOURCE_PASSWORD
-              value: "bankpw"
+              valueFrom:
+                secretKeyRef:
+                  name: cloudsql-db-credentials
+                  key: password
             - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
               value: "kafka.kafka.svc.cluster.local:9092"

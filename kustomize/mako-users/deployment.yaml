@@ -24,11 +24,17 @@ spec:
             - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
               value: "http://mako-service-registry.mako-services.svc.cluster.local:8761/eureka/"
             - name: SPRING_DATASOURCE_URL
-              value: "jdbc:postgresql://postgres-users-postgresql.mako-users.svc.cluster.local:5432/mako_users"
+              value: "jdbc:postgresql://cloudsql-proxy.mako-db.svc.cluster.local:5432/mako_bank?currentSchema=users"
             - name: SPRING_DATASOURCE_USERNAME
-              value: "bank"
+              valueFrom:
+                secretKeyRef:
+                  name: cloudsql-db-credentials
+                  key: username
             - name: SPRING_DATASOURCE_PASSWORD
-              value: "bankpw"
+              valueFrom:
+                secretKeyRef:
+                  name: cloudsql-db-credentials
+                  key: password
             - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
               value: "kafka.kafka.svc.cluster.local:9092"
             - name: SPRING_DATA_REDIS_HOST

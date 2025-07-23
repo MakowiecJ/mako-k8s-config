@@ -1,0 +1,22 @@
+# Security: Never commit these files
+*.json
+**/credentials.*
+**/secret-*.yaml
+cloudsql-proxy-key.json
+service-account-*.json
+
+# Temporary files
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
