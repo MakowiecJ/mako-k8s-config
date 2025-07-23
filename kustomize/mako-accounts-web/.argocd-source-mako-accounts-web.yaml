@@ -1,3 +1,3 @@
 kustomize:
   images:
-  - europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-accounts-web=europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-accounts-web:23dbc906416134725457387a48a9a57d81501f64
+  - europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-accounts-web=europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-accounts-web:636e0d34b4a933e33e634e32f03f6ebc1df0ab2d
