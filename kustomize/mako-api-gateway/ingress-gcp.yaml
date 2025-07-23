@@ -3,11 +3,11 @@ kind: Ingress
 metadata:
   name: mako-api-gateway
   annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.global-static-ip-name: "mako-bank-ip"
+    networking.gke.io/managed-certificates: "mako-bank-ssl-cert"
+    kubernetes.io/ingress.allow-http: "false"
 spec:
-  ingressClassName: nginx
   rules:
     - host: api.mako-bank.com
       http:

@@ -13,7 +13,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: argocd.mako-bank.local
+    - host: argocd.mako-bank.com
       http:
         paths:
           - path: /

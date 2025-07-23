@@ -22,7 +22,7 @@ spec:
             - name: NODE_ENV
               value: "production"
             - name: PUBLIC_PATH
-              value: "http://shell.mako-bank.local"
+              value: "http://shell.mako-bank.com"
           volumeMounts:
             - name: nginx-config
               mountPath: /etc/nginx/nginx.conf

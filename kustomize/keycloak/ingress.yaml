@@ -9,7 +9,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: keycloak.mako-bank.local
+    - host: keycloak.mako-bank.com
       http:
         paths:
           - path: /
