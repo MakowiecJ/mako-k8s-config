@@ -1,3 +1,3 @@
 kustomize:
   images:
-  - europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-shell=europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-shell:b16c4ddea1e19902e81c3ad1361f7bd21908bfed
+  - europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-shell=europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-shell:108f74dd172e39a30f69a26574950256fed89bed
