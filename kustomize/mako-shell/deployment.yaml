@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mako-shell
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mako-shell
+  template:
+    metadata:
+      labels:
+        app: mako-shell
+    spec:
+      containers:
+        - name: mako-shell
+          image: "europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-shell:placeholder"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 4200
+          env:
+            - name: NODE_ENV
+              value: "production"

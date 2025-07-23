@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mako-transactions-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mako-transactions-web
+  template:
+    metadata:
+      labels:
+        app: mako-transactions-web
+    spec:
+      containers:
+        - name: mako-transactions-web
+          image: "europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-transactions-web:placeholder"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 4203
+          env:
+            - name: NODE_ENV
+              value: "production"

@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mako-service-registry
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mako-service-registry
+  template:
+    metadata:
+      labels:
+        app: mako-service-registry
+    spec:
+      containers:
+        - name: mako-service-registry
+          image: "europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-service-registry:placeholder"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8761
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "gke"

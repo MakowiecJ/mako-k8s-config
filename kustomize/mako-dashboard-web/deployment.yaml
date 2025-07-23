@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mako-dashboard-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mako-dashboard-web
+  template:
+    metadata:
+      labels:
+        app: mako-dashboard-web
+    spec:
+      containers:
+        - name: mako-dashboard-web
+          image: "europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-dashboard-web:placeholder"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 4201
+          env:
+            - name: NODE_ENV
+              value: "production"

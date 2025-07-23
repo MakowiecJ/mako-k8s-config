@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mako-api-gateway
+  name: mako-accounts
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mako-api-gateway
+      app: mako-accounts
   template:
     metadata:
       labels:
-        app: mako-api-gateway
+        app: mako-accounts
     spec:
       containers:
-        - name: mako-api-gateway
-          image: "europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-api-gateway:placeholder"
+        - name: mako-accounts
+          image: "europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-accounts:placeholder"
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8081
+            - containerPort: 8083
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "gke"

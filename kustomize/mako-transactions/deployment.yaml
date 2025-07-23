@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mako-transactions
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mako-transactions
+  template:
+    metadata:
+      labels:
+        app: mako-transactions
+    spec:
+      containers:
+        - name: mako-transactions
+          image: "europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-transactions:placeholder"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8084
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "gke"
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: "http://mako-service-registry.mako-services.svc.cluster.local:8761/eureka/"
+            - name: SERVICES_ACCOUNTS_URL
+              value: "http://mako-accounts.mako-services.svc.cluster.local:8083/accounts"
+            - name: SERVICES_USERS_URL
+              value: "http://mako-users.mako-services.svc.cluster.local:8082/users"

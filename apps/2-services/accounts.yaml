@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mako-accounts
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: mako-accounts=europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-accounts
+    argocd-image-updater.argoproj.io/mako-accounts.kustomize.image-name: europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-accounts
+    argocd-image-updater.argoproj.io/mako-accounts.update-strategy: latest
+    argocd-image-updater.argoproj.io/mako-accounts.allow-tags: regexp:^.*
+    argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/argocd-git-creds
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    path: kustomize/mako-accounts
+    repoURL: git@github.com:MakowiecJ/mako-k8s-config.git
+    targetRevision: HEAD
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: mako-services
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
