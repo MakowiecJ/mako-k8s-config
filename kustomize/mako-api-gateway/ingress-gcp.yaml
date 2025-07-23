@@ -8,6 +8,10 @@ metadata:
     networking.gke.io/managed-certificates: "mako-bank-ssl-cert"
     kubernetes.io/ingress.allow-http: "false"
 spec:
+  tls:
+    - hosts:
+      - api.mako-bank.com
+      secretName: mako-bank-tls
   rules:
     - host: api.mako-bank.com
       http:
