@@ -5,11 +5,13 @@ metadata:
   namespace: default
 spec:
   domains:
+    - mako-bank.com
     - dashboard.mako-bank.com
     - api.mako-bank.com
     - users.mako-bank.com
     - accounts.mako-bank.com
     - transactions.mako-bank.com
+    - keycloak.mako-bank.com
 ---
 apiVersion: networking.gke.io/v1
 kind: ManagedCertificate

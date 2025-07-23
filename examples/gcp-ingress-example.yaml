@@ -7,7 +7,7 @@ metadata:
     kubernetes.io/ingress.class: "gce"
     
     # Enable Google-managed SSL certificates
-    kubernetes.io/ingress.global-static-ip-name: "mako-bank-ip"
+    kubernetes.io/ingress.global-static-ip-name: "mako-ingress-ip"
     networking.gke.io/managed-certificates: "mako-bank-ssl-cert"
     
     # Optional: Configure SSL redirect
