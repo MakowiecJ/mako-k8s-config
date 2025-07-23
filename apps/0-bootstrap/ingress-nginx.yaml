@@ -7,6 +7,7 @@ metadata:
   - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
+  loadBalancerIP: 34.110.129.111
   source:
     chart: ingress-nginx
     repoURL: https://kubernetes.github.io/ingress-nginx

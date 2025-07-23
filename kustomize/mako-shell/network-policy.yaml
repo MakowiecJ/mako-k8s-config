@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: mako-shell-network-policy
+spec:
+  podSelector:
+    matchLabels:
+      app: mako-shell
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: ingress-nginx
+    ports:
+    - protocol: TCP
+      port: 4200
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: mako-backend
+    ports:
+    - protocol: TCP
+      port: 8080
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53

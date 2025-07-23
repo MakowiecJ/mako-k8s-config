@@ -3,13 +3,18 @@ kind: Ingress
 metadata:
   name: mako-shell
   annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
   ingressClassName: nginx
+  tls:
+    - hosts:
+        - mako-bank.com
+      secretName: mako-shell-tls
   rules:
-    - host: shell.mako-bank.local
+    - host: mako-bank.com
       http:
         paths:
           - path: /

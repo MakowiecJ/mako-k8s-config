@@ -5,6 +5,7 @@ resources:
 - service.yaml
 - ingress.yaml
 - nginx-config.yaml
+- network-policy.yaml
 
 images:
 - name: europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-shell
