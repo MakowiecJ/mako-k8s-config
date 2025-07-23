@@ -23,3 +23,5 @@ spec:
               value: "gke"
             - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
               value: "http://mako-service-registry.mako-services.svc.cluster.local:8761/eureka/"
+            - name: KEYCLOAK_REALM_URL
+              value: "http://keycloak.keycloak.svc.cluster.local:8080"
