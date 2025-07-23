@@ -2,15 +2,31 @@ apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
 metadata:
   name: mako-bank-ssl-cert
-  namespace: default
+  namespace: mako-frontend
 spec:
   domains:
     - mako-bank.com
     - dashboard.mako-bank.com
-    - api.mako-bank.com
     - users.mako-bank.com
     - accounts.mako-bank.com
     - transactions.mako-bank.com
+---
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: mako-bank-ssl-cert
+  namespace: mako-services
+spec:
+  domains:
+    - api.mako-bank.com
+---
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: mako-bank-ssl-cert
+  namespace: keycloak
+spec:
+  domains:
     - keycloak.mako-bank.com
 ---
 apiVersion: networking.gke.io/v1
