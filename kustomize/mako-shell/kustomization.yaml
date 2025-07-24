@@ -3,7 +3,6 @@ kind: Kustomization
 resources:
 - deployment.yaml
 - service.yaml
-- ingress-gcp.yaml
 - nginx-config.yaml
 - network-policy.yaml
 

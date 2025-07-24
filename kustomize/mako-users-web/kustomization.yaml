@@ -4,7 +4,6 @@ resources:
 - deployment.yaml
 - service.yaml
 - nginx-config.yaml
-- ingress-gcp.yaml
 
 images:
 - name: europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-users-web
