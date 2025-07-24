@@ -2,6 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mako-shell
+  annotations:
+    cloud.google.com/backend-config: '{"default": "mako-shell-backend-config"}'
 spec:
   type: ClusterIP
   ports:
