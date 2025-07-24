@@ -11,15 +11,6 @@ apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
 metadata:
   name: mako-bank-ssl-cert
-  namespace: mako-services
-spec:
-  domains:
-    - api.mako-bank.com
----
-apiVersion: networking.gke.io/v1
-kind: ManagedCertificate
-metadata:
-  name: mako-bank-ssl-cert
   namespace: keycloak
 spec:
   domains:
