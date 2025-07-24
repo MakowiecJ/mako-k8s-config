@@ -4,8 +4,6 @@ metadata:
   name: keycloak
   annotations:
     kubernetes.io/ingress.class: "gce"
-    networking.gke.io/managed-certificates: "mako-bank-ssl-cert"
-    kubernetes.io/ingress.allow-http: "true"  # Allow HTTP during cert provisioning
 spec:
   rules:
     - host: keycloak.mako-bank.com

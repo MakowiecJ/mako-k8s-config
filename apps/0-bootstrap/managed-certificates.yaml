@@ -6,21 +6,3 @@ metadata:
 spec:
   domains:
     - mako-bank.com
----
-apiVersion: networking.gke.io/v1
-kind: ManagedCertificate
-metadata:
-  name: mako-bank-ssl-cert
-  namespace: keycloak
-spec:
-  domains:
-    - keycloak.mako-bank.com
----
-apiVersion: networking.gke.io/v1
-kind: ManagedCertificate
-metadata:
-  name: mako-bank-argocd-ssl-cert
-  namespace: argocd
-spec:
-  domains:
-    - argocd.mako-bank.com

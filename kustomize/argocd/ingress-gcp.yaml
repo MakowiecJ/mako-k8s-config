@@ -4,13 +4,11 @@ metadata:
   name: argocd-server
   annotations:
     kubernetes.io/ingress.class: "gce"
-    networking.gke.io/managed-certificates: "mako-bank-argocd-ssl-cert"
-    kubernetes.io/ingress.allow-http: "true"  # Allow HTTP during cert provisioning
     # ArgoCD specific annotations for GCP Load Balancer
     cloud.google.com/backend-config: '{"default": "argocd-backend-config"}'
 spec:
   rules:
-    - host: argocd.mako-bank.com  # Change from .local to real domain
+    - host: argocd.mako-bank.com
       http:
         paths:
           - path: /
