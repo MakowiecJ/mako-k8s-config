@@ -1,0 +1,39 @@
+# Resource optimization patches for all services
+# Apply these patches to reduce CPU/Memory requests and add proper limits
+
+# For Spring Boot backend services (API Gateway, Users, Accounts, Transactions, Notifications, Service Registry)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-service-template
+spec:
+  template:
+    spec:
+      containers:
+        - name: backend-service
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"     # Reduced from default
+            limits:
+              memory: "512Mi"
+              cpu: "500m"     # Reasonable limit for Spring Boot apps
+
+---
+# For Frontend/Nginx services (Shell, Dashboard-web, Users-web, Accounts-web, Transactions-web)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-service-template
+spec:
+  template:
+    spec:
+      containers:
+        - name: frontend-service
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"      # Very low for nginx
+            limits:
+              memory: "128Mi"
+              cpu: "200m"     # Sufficient for nginx serving static files
