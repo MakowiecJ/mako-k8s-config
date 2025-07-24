@@ -5,8 +5,12 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "gce"
     networking.gke.io/managed-certificates: "mako-bank-ssl-cert"
-    kubernetes.io/ingress.allow-http: "false"
+    kubernetes.io/ingress.allow-http: "true"  # Allow HTTP during cert provisioning
 spec:
+  tls:
+    - hosts:
+        - mako-bank.com
+      secretName: ""  # Empty for Google-managed certificates
   rules:
     - host: mako-bank.com
       http:

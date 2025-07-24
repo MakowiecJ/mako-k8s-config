@@ -6,8 +6,12 @@ metadata:
     kubernetes.io/ingress.class: "gce"
     kubernetes.io/ingress.global-static-ip-name: "mako-ingress-ip-global"
     networking.gke.io/managed-certificates: "mako-bank-ssl-cert"
-    kubernetes.io/ingress.allow-http: "false"
+    kubernetes.io/ingress.allow-http: "true"  # Allow HTTP during cert provisioning
 spec:
+  tls:
+    - hosts:
+        - api.mako-bank.com
+      secretName: ""  # Empty for Google-managed certificates
   rules:
     - host: api.mako-bank.com
       http:
