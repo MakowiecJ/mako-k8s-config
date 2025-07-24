@@ -10,9 +10,6 @@ metadata:
     # ArgoCD specific annotations for GCP Load Balancer
     cloud.google.com/backend-config: '{"default": "argocd-backend-config"}'
 spec:
-  tls:
-    - hosts:
-      - argocd.mako-bank.com
   rules:
     - host: argocd.mako-bank.com  # Change from .local to real domain
       http:
