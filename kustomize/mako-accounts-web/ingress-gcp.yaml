@@ -11,7 +11,6 @@ spec:
   tls:
     - hosts:
       - accounts.mako-bank.com
-      secretName: mako-bank-tls
   rules:
     - host: accounts.mako-bank.com
       http:

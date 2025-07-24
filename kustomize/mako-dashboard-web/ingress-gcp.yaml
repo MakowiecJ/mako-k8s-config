@@ -11,7 +11,6 @@ spec:
   tls:
     - hosts:
       - dashboard.mako-bank.com
-      secretName: mako-bank-tls
   rules:
     - host: dashboard.mako-bank.com
       http:

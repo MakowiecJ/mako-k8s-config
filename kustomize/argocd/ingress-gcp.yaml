@@ -13,7 +13,6 @@ spec:
   tls:
     - hosts:
       - argocd.mako-bank.com
-      secretName: mako-bank-argocd-tls
   rules:
     - host: argocd.mako-bank.com  # Change from .local to real domain
       http:
