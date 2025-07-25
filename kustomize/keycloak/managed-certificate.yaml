@@ -2,9 +2,7 @@ apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
 metadata:
   name: mako-bank-ssl-cert
-  namespace: mako-frontend
+  namespace: keycloak
 spec:
   domains:
-    - mako-bank.com
     - keycloak.mako-bank.com
-    - argocd.mako-bank.com
