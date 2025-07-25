@@ -18,4 +18,4 @@ spec:
               service:
                 name: mako-shell
                 port:
-                  name: http
+                  number: 80
