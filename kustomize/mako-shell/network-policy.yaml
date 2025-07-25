@@ -7,13 +7,10 @@ spec:
     matchLabels:
       app: mako-shell
   policyTypes:
-  - Ingress
+  - Ingress  
   - Egress
   ingress:
-  - from:
-    - namespaceSelector:
-        matchLabels:
-          name: ingress-nginx
+  - from: []  # Allow ingress from GCE load balancer
     ports:
     - protocol: TCP
       port: 4200
@@ -21,13 +18,17 @@ spec:
   - to:
     - namespaceSelector:
         matchLabels:
-          name: mako-backend
+          name: mako-services
     ports:
     - protocol: TCP
-      port: 8080
-  - to: []
+      port: 8081  # API Gateway port
+  - to: []  # Allow DNS resolution
     ports:
     - protocol: TCP
       port: 53
     - protocol: UDP
       port: 53
+  - to: []  # Allow HTTPS for external dependencies
+    ports:
+    - protocol: TCP
+      port: 443

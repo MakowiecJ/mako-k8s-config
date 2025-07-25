@@ -5,13 +5,13 @@ metadata:
   namespace: mako-frontend
 spec:
   healthCheck:
-    checkIntervalSec: 10
-    timeoutSec: 5
-    healthyThreshold: 1
-    unhealthyThreshold: 3
+    checkIntervalSec: 15
+    timeoutSec: 10
+    healthyThreshold: 2
+    unhealthyThreshold: 2
     type: HTTP
     requestPath: /
     port: 4200
-  timeoutSec: 30
+  timeoutSec: 60
   connectionDraining:
-    drainingTimeoutSec: 60
+    drainingTimeoutSec: 30
