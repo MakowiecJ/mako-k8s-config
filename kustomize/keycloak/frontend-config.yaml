@@ -1,0 +1,8 @@
+apiVersion: networking.gke.io/v1beta1
+kind: FrontendConfig
+metadata:
+  name: keycloak-http-to-https
+  namespace: keycloak
+spec:
+  redirectToHttps:
+    enabled: true
