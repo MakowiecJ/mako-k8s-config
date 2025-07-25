@@ -5,3 +5,4 @@ resources:
 - frontend-config.yaml
 - backend-config.yaml
 - microfrontend-backend-configs.yaml
+- external-services.yaml

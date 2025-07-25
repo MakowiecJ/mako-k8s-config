@@ -1,8 +1,0 @@
-apiVersion: networking.gke.io/v1
-kind: ManagedCertificate
-metadata:
-  name: mako-bank-ssl-cert
-  namespace: argocd
-spec:
-  domains:
-    - argocd.mako-bank.com

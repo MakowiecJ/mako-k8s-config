@@ -52,3 +52,25 @@ spec:
                 name: mako-users-web
                 port:
                   number: 4204
+    # Keycloak Identity Provider
+    - host: keycloak.mako-bank.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak-external
+                port:
+                  number: 80
+    # ArgoCD GitOps Platform
+    - host: argocd.mako-bank.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: argocd-external
+                port:
+                  number: 80

@@ -3,5 +3,3 @@ kind: Kustomization
 
 resources:
   - realm-config.yaml
-  - ingress.yaml
-  - managed-certificate.yaml
