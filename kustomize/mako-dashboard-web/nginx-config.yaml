@@ -27,12 +27,17 @@ data:
             add_header Access-Control-Allow-Headers 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
 
             # Handle Angular routing
+            location /dashboard/ {
+                rewrite ^/dashboard/(.*)$ /$1 break;
+                try_files $uri $uri/ /index.html;
+            }
+
             location / {
                 try_files $uri $uri/ /index.html;
             }
 
             # Handle remoteEntry.js for Module Federation with CORS
-            location /remoteEntry.js {
+            location = /dashboard/remoteEntry.js {
                 add_header Access-Control-Allow-Origin *;
                 add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS';
                 add_header Access-Control-Allow-Headers 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
@@ -47,13 +52,15 @@ data:
                     return 204;
                 }
                 
+                rewrite ^/dashboard/(.*)$ /$1 break;
                 try_files $uri =404;
             }
 
             # Handle all JavaScript files with CORS
-            location ~ \.js$ {
+            location ~ /dashboard/.+\.js$ {
                 add_header Access-Control-Allow-Origin *;
                 add_header Content-Type application/javascript;
+                rewrite ^/dashboard/(.*)$ /$1 break;
                 try_files $uri =404;
             }
 

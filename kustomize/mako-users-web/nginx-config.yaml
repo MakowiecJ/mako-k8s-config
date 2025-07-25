@@ -26,13 +26,18 @@ data:
             add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS';
             add_header Access-Control-Allow-Headers 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
 
-            # Handle Angular routing
+                        # Handle Angular routing
+            location /users/ {
+                rewrite ^/users/(.*)$ /$1 break;
+                try_files $uri $uri/ /index.html;
+            }
+
             location / {
                 try_files $uri $uri/ /index.html;
             }
 
             # Handle remoteEntry.js for Module Federation with CORS
-            location /remoteEntry.js {
+            location = /users/remoteEntry.js {
                 add_header Access-Control-Allow-Origin *;
                 add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS';
                 add_header Access-Control-Allow-Headers 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
@@ -47,13 +52,15 @@ data:
                     return 204;
                 }
                 
+                rewrite ^/users/(.*)$ /$1 break;
                 try_files $uri =404;
             }
 
             # Handle all JavaScript files with CORS
-            location ~ \.js$ {
+            location ~ /users/.+\.js$ {
                 add_header Access-Control-Allow-Origin *;
                 add_header Content-Type application/javascript;
+                rewrite ^/users/(.*)$ /$1 break;
                 try_files $uri =404;
             }
 
