@@ -22,9 +22,11 @@ spec:
             requests:
               memory: "32Mi"
               cpu: "25m"
+              ephemeral-storage: "100Mi"
             limits:
               memory: "64Mi"
               cpu: "100m"
+              ephemeral-storage: "200Mi"
           env:
             - name: NODE_ENV
               value: "production"
