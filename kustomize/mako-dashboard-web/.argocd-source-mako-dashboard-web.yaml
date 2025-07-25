@@ -1,3 +1,3 @@
 kustomize:
   images:
-  - europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-dashboard-web=europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-dashboard-web:d3c0fc774bb5d1b9eb9676b53377bd2a2f060708
+  - europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-dashboard-web=europe-central2-docker.pkg.dev/mako-bank/mako-images/mako-dashboard-web:c3aa132d5bb57ad57e3fdaaf802628a484c5c5e5
