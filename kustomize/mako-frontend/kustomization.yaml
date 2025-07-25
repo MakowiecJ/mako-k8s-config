@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
 - ingress-consolidated.yaml
 - backend-config.yaml
+- microfrontend-backend-configs.yaml

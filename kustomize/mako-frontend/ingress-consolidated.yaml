@@ -12,6 +12,7 @@ spec:
     - host: mako-bank.com
       http:
         paths:
+          # Main shell application
           - path: /
             pathType: Prefix
             backend:
@@ -19,3 +20,35 @@ spec:
                 name: mako-shell
                 port:
                   number: 80
+          # Dashboard microfrontend for Module Federation
+          - path: /dashboard
+            pathType: Prefix
+            backend:
+              service:
+                name: mako-dashboard-web
+                port:
+                  number: 4201
+          # Accounts microfrontend for Module Federation  
+          - path: /accounts
+            pathType: Prefix
+            backend:
+              service:
+                name: mako-accounts-web
+                port:
+                  number: 4202
+          # Transactions microfrontend for Module Federation
+          - path: /transactions
+            pathType: Prefix
+            backend:
+              service:
+                name: mako-transactions-web
+                port:
+                  number: 4203
+          # Users microfrontend for Module Federation
+          - path: /users
+            pathType: Prefix
+            backend:
+              service:
+                name: mako-users-web
+                port:
+                  number: 4204

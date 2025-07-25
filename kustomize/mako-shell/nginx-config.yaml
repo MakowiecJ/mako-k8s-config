@@ -21,10 +21,117 @@ data:
             root   /usr/share/nginx/html;
             index  index.html index.htm;
 
-            # CORS headers for Module Federation
+            # CORS headers for Module Federation - improved configuration
             add_header Access-Control-Allow-Origin *;
-            add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS';
-            add_header Access-Control-Allow-Headers 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
+            add_header Access-Control-Allow-Methods 'GET, POST, PUT, DELETE, OPTIONS';
+            add_header Access-Control-Allow-Headers 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization';
+            add_header Access-Control-Expose-Headers 'Content-Length,Content-Range';
+            add_header Access-Control-Max-Age 86400;
+
+            # Handle preflight requests
+            if ($request_method = 'OPTIONS') {
+                add_header Access-Control-Allow-Origin *;
+                add_header Access-Control-Allow-Methods 'GET, POST, PUT, DELETE, OPTIONS';
+                add_header Access-Control-Allow-Headers 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization';
+                add_header Access-Control-Max-Age 86400;
+                add_header Content-Type 'text/plain; charset=utf-8';
+                add_header Content-Length 0;
+                return 204;
+            }
+
+            # Proxy to dashboard microfrontend
+            location /dashboard/ {
+                proxy_pass http://mako-dashboard-web.mako-frontend.svc.cluster.local:4201/;
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                
+                # Add CORS headers for proxied requests
+                add_header Access-Control-Allow-Origin *;
+                add_header Access-Control-Allow-Methods 'GET, POST, PUT, DELETE, OPTIONS';
+                add_header Access-Control-Allow-Headers 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization';
+            }
+
+            # Proxy to accounts microfrontend
+            location /accounts/ {
+                proxy_pass http://mako-accounts-web.mako-frontend.svc.cluster.local:4202/;
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                
+                # Add CORS headers for proxied requests
+                add_header Access-Control-Allow-Origin *;
+                add_header Access-Control-Allow-Methods 'GET, POST, PUT, DELETE, OPTIONS';
+                add_header Access-Control-Allow-Headers 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization';
+            }
+
+            # Proxy to transactions microfrontend
+            location /transactions/ {
+                proxy_pass http://mako-transactions-web.mako-frontend.svc.cluster.local:4203/;
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                
+                # Add CORS headers for proxied requests
+                add_header Access-Control-Allow-Origin *;
+                add_header Access-Control-Allow-Methods 'GET, POST, PUT, DELETE, OPTIONS';
+                add_header Access-Control-Allow-Headers 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization';
+            }
+
+            # Proxy to users microfrontend
+            location /users/ {
+                proxy_pass http://mako-users-web.mako-frontend.svc.cluster.local:4204/;
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                
+                # Add CORS headers for proxied requests
+                add_header Access-Control-Allow-Origin *;
+                add_header Access-Control-Allow-Methods 'GET, POST, PUT, DELETE, OPTIONS';
+                add_header Access-Control-Allow-Headers 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization';
+            }
+
+            # Handle remoteEntry.js for Module Federation with proper CORS
+            location ~ /remoteEntry\.js$ {
+                add_header Access-Control-Allow-Origin *;
+                add_header Access-Control-Allow-Methods 'GET, OPTIONS';
+                add_header Access-Control-Allow-Headers 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
+                add_header Content-Type application/javascript;
+                
+                if ($request_method = 'OPTIONS') {
+                    add_header Access-Control-Allow-Origin *;
+                    add_header Access-Control-Allow-Methods 'GET, OPTIONS';
+                    add_header Access-Control-Allow-Headers 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
+                    add_header Content-Length 0;
+                    add_header Content-Type text/plain;
+                    return 204;
+                }
+                
+                try_files $uri =404;
+            }
+
+            # Handle all JavaScript files with CORS for Module Federation
+            location ~ \.js$ {
+                add_header Access-Control-Allow-Origin *;
+                add_header Access-Control-Allow-Methods 'GET, OPTIONS';
+                add_header Access-Control-Allow-Headers 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
+                add_header Content-Type application/javascript;
+                
+                if ($request_method = 'OPTIONS') {
+                    add_header Access-Control-Allow-Origin *;
+                    add_header Access-Control-Allow-Methods 'GET, OPTIONS';
+                    add_header Access-Control-Allow-Headers 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
+                    add_header Content-Length 0;
+                    add_header Content-Type text/plain;
+                    return 204;
+                }
+                
+                try_files $uri =404;
+            }
 
             # Handle Angular routing
             location / {

@@ -22,6 +22,19 @@ spec:
     ports:
     - protocol: TCP
       port: 8081  # API Gateway port
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: mako-frontend
+    ports:
+    - protocol: TCP
+      port: 4201  # Dashboard web
+    - protocol: TCP
+      port: 4202  # Accounts web
+    - protocol: TCP
+      port: 4203  # Transactions web
+    - protocol: TCP
+      port: 4204  # Users web
   - to: []  # Allow DNS resolution
     ports:
     - protocol: TCP
