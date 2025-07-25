@@ -36,11 +36,11 @@ spec:
             failureThreshold: 3
           resources:
             requests:
-              memory: "128Mi"
-              cpu: "100m"
+              memory: "32Mi"
+              cpu: "25m"
             limits:
-              memory: "256Mi"
-              cpu: "500m"
+              memory: "64Mi"
+              cpu: "100m"
           env:
             - name: NODE_ENV
               value: "production"

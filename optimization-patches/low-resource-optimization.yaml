@@ -1,0 +1,58 @@
+# Ultra-low resource optimization for quota compliance
+# These settings prioritize staying within quotas over performance
+
+# Backend Services - Ultra Low Resource Settings
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-service-ultra-low
+spec:
+  template:
+    spec:
+      containers:
+        - name: backend-service
+          resources:
+            requests:
+              memory: "128Mi"   # Reduced from 256Mi
+              cpu: "50m"        # Reduced from 100m
+            limits:
+              memory: "256Mi"   # Reduced from 512Mi
+              cpu: "200m"       # Reduced from 500m
+
+---
+# Frontend Services - Ultra Low Resource Settings  
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-service-ultra-low
+spec:
+  template:
+    spec:
+      containers:
+        - name: frontend-service
+          resources:
+            requests:
+              memory: "32Mi"    # Reduced from 64Mi
+              cpu: "25m"        # Reduced from 50m
+            limits:
+              memory: "64Mi"    # Reduced from 128Mi
+              cpu: "100m"       # Reduced from 200m
+
+---
+# CloudSQL Proxy - Ultra Low Resource Settings
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudsql-proxy-ultra-low
+spec:
+  template:
+    spec:
+      containers:
+        - name: cloudsql-proxy
+          resources:
+            requests:
+              memory: "64Mi"    # Reduced from 128Mi
+              cpu: "25m"        # Reduced from 100m
+            limits:
+              memory: "128Mi"   # Reduced from 256Mi
+              cpu: "100m"       # Reduced from 200m
