@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mako-data-seeds
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/MakowiecJ/mako-k8s-config.git
+    targetRevision: HEAD
+    path: kustomize/data-seeds
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: mako-services
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - Replace=true
+  ignoreDifferences:
+  - group: batch
+    kind: Job
+    jsonPointers:
+    - /spec/selector
+    - /spec/template/metadata/labels

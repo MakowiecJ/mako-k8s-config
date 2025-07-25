@@ -1,0 +1,150 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keycloak-realm-config
+  namespace: keycloak
+data:
+  mako-bank-realm.json: |
+    {
+      "realm": "mako-bank",
+      "displayName": "Mako Bank",
+      "displayNameHtml": "<div class=\"kc-logo-text\"><span>Mako Bank</span></div>",
+      "enabled": true,
+      "sslRequired": "external",
+      "registrationAllowed": false,
+      "loginWithEmailAllowed": true,
+      "duplicateEmailsAllowed": false,
+      "resetPasswordAllowed": true,
+      "editUsernameAllowed": false,
+      "bruteForceProtected": true,
+      "permanentLockout": false,
+      "maxFailureWaitSeconds": 900,
+      "minimumQuickLoginWaitSeconds": 60,
+      "waitIncrementSeconds": 60,
+      "quickLoginCheckMilliSeconds": 1000,
+      "maxDeltaTimeSeconds": 43200,
+      "failureFactor": 30,
+      "roles": {
+        "realm": [
+          {
+            "name": "user",
+            "description": "User role for accessing Mako Bank services"
+          },
+          {
+            "name": "admin",
+            "description": "Administrator role for managing Mako Bank"
+          }
+        ]
+      },
+      "users": [
+        {
+          "id": "cdd4e82f-1ceb-4600-908f-f435df3672bd",
+          "username": "john",
+          "enabled": true,
+          "emailVerified": true,
+          "firstName": "John",
+          "lastName": "Walter",
+          "email": "john.walter@email.com",
+          "attributes": {
+            "phone": ["+1-555-0101"],
+            "address": ["123 Main St, New York, NY 10001"]
+          },
+          "credentials": [
+            {
+              "type": "password",
+              "value": "password",
+              "temporary": false
+            }
+          ],
+          "realmRoles": ["user"],
+          "clientRoles": {
+            "account": ["view-profile", "manage-account"]
+          }
+        },
+        {
+          "id": "a5ebbd33-0ef4-4203-abe1-fddc35762b04",
+          "username": "jane",
+          "enabled": true,
+          "emailVerified": true,
+          "firstName": "Jane",
+          "lastName": "Smith",
+          "email": "jane.smith@email.com",
+          "attributes": {
+            "phone": ["+1-555-0102"],
+            "address": ["456 Oak Ave, Los Angeles, CA 90210"]
+          },
+          "credentials": [
+            {
+              "type": "password",
+              "value": "password",
+              "temporary": false
+            }
+          ],
+          "realmRoles": ["user"],
+          "clientRoles": {
+            "account": ["view-profile", "manage-account"]
+          }
+        },
+        {
+          "id": "0edfcbff-b61a-4530-9618-c9f309594b29",
+          "username": "bob",
+          "enabled": true,
+          "emailVerified": true,
+          "firstName": "Bob",
+          "lastName": "Johnson",
+          "email": "bob.johnson@email.com",
+          "attributes": {
+            "phone": ["+1-555-0103"],
+            "address": ["789 Pine Rd, Chicago, IL 60601"]
+          },
+          "credentials": [
+            {
+              "type": "password",
+              "value": "password",
+              "temporary": false
+            }
+          ],
+          "realmRoles": ["user"],
+          "clientRoles": {
+            "account": ["view-profile", "manage-account"]
+          }
+        }
+      ],
+      "clients": [
+        {
+          "clientId": "mako-shell",
+          "name": "Mako Shell Application",
+          "description": "Main shell application for Mako Bank",
+          "enabled": true,
+          "clientAuthenticatorType": "client-secret",
+          "secret": "mako-shell-secret",
+          "redirectUris": [
+            "http://localhost:4200/*",
+            "http://shell.mako-bank.local/*",
+            "https://mako-bank.com/*"
+          ],
+          "webOrigins": [
+            "http://localhost:4200",
+            "http://shell.mako-bank.local",
+            "https://mako-bank.com"
+          ],
+          "publicClient": true,
+          "frontchannelLogout": false,
+          "protocol": "openid-connect",
+          "standardFlowEnabled": true,
+          "implicitFlowEnabled": false,
+          "directAccessGrantsEnabled": true,
+          "serviceAccountsEnabled": false,
+          "fullScopeAllowed": true,
+          "attributes": {
+            "access.token.lifespan": "1800",
+            "pkce.code.challenge.method": "S256",
+            "post.logout.redirect.uris": "http://localhost:4200/*##http://shell.mako-bank.local/*##https://mako-bank.com/*",
+            "oauth2.device.authorization.grant.enabled": "false",
+            "oidc.ciba.grant.enabled": "false",
+            "backchannel.logout.session.required": "true",
+            "backchannel.logout.revoke.offline.tokens": "false"
+          }
+        }
+      ]
+    }

@@ -1,0 +1,72 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: transactions-db-seed
+  namespace: mako-services
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: seed-transactions-db
+        image: postgres:16
+        env:
+        - name: PGHOST
+          value: "postgres-transactions-postgresql.mako-services.svc.cluster.local"
+        - name: PGPORT
+          value: "5432"
+        - name: PGDATABASE
+          value: "mako_transactions"
+        - name: PGUSER
+          value: "bank"
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-transactions-secret
+              key: password
+        command:
+        - /bin/bash
+        - -c
+        - |
+          echo "Waiting for PostgreSQL to be ready..."
+          until pg_isready -h $PGHOST -p $PGPORT -U $PGUSER; do
+            echo "PostgreSQL is not ready yet. Waiting..."
+            sleep 5
+          done
+          
+          echo "PostgreSQL is ready. Starting transactions data seeding..."
+          
+          # Execute the seed SQL
+          psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE << 'EOF'
+          -- Transactions seed data
+          CREATE TABLE IF NOT EXISTS TRANSACTIONS
+          (
+              ID                VARCHAR(36) NOT NULL PRIMARY KEY,
+              TITLE             VARCHAR(255) NOT NULL,
+              DESCRIPTION       TEXT,
+              AMOUNT            DECIMAL(19, 4) NOT NULL,
+              CURRENCY          VARCHAR(10) NOT NULL,
+              SOURCE_ACCOUNT_ID VARCHAR(36) NOT NULL,
+              TARGET_ACCOUNT_ID VARCHAR(36),
+              TRANSACTION_TYPE  VARCHAR(50) NOT NULL,
+              TRANSACTION_DATE  TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+              STATUS            VARCHAR(50) DEFAULT 'COMPLETED' NOT NULL,
+              REFERENCE_NUMBER  VARCHAR(100) UNIQUE NOT NULL
+          );
+
+          -- Insert sample transactions
+          INSERT INTO TRANSACTIONS (ID, TITLE, DESCRIPTION, AMOUNT, CURRENCY, SOURCE_ACCOUNT_ID, TARGET_ACCOUNT_ID, TRANSACTION_TYPE, REFERENCE_NUMBER, STATUS) VALUES
+          ('trans-001', 'Salary Deposit', 'Monthly salary payment', 3500.0000, 'USD', 'account-001', NULL, 'DEPOSIT', 'TXN-001-2024-001', 'COMPLETED'),
+          ('trans-002', 'Grocery Shopping', 'Weekly grocery shopping at SuperMart', -127.50, 'USD', 'account-001', NULL, 'WITHDRAWAL', 'TXN-002-2024-002', 'COMPLETED'),
+          ('trans-003', 'Transfer to Savings', 'Monthly savings transfer', -500.0000, 'USD', 'account-001', 'account-002', 'TRANSFER', 'TXN-003-2024-003', 'COMPLETED'),
+          ('trans-004', 'Coffee Shop', 'Morning coffee purchase', -4.75, 'USD', 'account-003', NULL, 'WITHDRAWAL', 'TXN-004-2024-004', 'COMPLETED'),
+          ('trans-005', 'Online Purchase', 'Amazon purchase - Electronics', -299.99, 'USD', 'account-004', NULL, 'WITHDRAWAL', 'TXN-005-2024-005', 'COMPLETED')
+          ON CONFLICT (ID) DO NOTHING;
+          
+          EOF
+          
+          echo "Transactions database seeding completed successfully!"
+      backoffLimit: 3

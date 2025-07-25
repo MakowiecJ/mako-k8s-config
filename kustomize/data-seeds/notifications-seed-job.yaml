@@ -1,0 +1,69 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: notifications-db-seed
+  namespace: mako-services
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: seed-notifications-db
+        image: postgres:16
+        env:
+        - name: PGHOST
+          value: "postgres-notifications-postgresql.mako-services.svc.cluster.local"
+        - name: PGPORT
+          value: "5432"
+        - name: PGDATABASE
+          value: "mako_notifications"
+        - name: PGUSER
+          value: "bank"
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-notifications-secret
+              key: password
+        command:
+        - /bin/bash
+        - -c
+        - |
+          echo "Waiting for PostgreSQL to be ready..."
+          until pg_isready -h $PGHOST -p $PGPORT -U $PGUSER; do
+            echo "PostgreSQL is not ready yet. Waiting..."
+            sleep 5
+          done
+          
+          echo "PostgreSQL is ready. Starting notifications data seeding..."
+          
+          # Execute the seed SQL
+          psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE << 'EOF'
+          -- Notifications seed data
+          CREATE TABLE IF NOT EXISTS NOTIFICATIONS
+          (
+              ID           VARCHAR(36) NOT NULL PRIMARY KEY,
+              USER_ID      VARCHAR(36) NOT NULL,
+              TITLE        VARCHAR(255) NOT NULL,
+              MESSAGE      TEXT NOT NULL,
+              TYPE         VARCHAR(50) NOT NULL,
+              STATUS       VARCHAR(50) DEFAULT 'UNREAD' NOT NULL,
+              CREATED_DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+              READ_DATE    TIMESTAMP
+          );
+
+          -- Insert sample notifications
+          INSERT INTO NOTIFICATIONS (ID, USER_ID, TITLE, MESSAGE, TYPE, STATUS) VALUES
+          ('notif-001', 'user-001', 'Welcome to Mako Bank!', 'Thank you for joining Mako Bank. Your account has been successfully created.', 'INFO', 'READ'),
+          ('notif-002', 'user-001', 'Transaction Alert', 'Your account has been debited with $127.50 for grocery shopping.', 'TRANSACTION', 'UNREAD'),
+          ('notif-003', 'user-001', 'Monthly Statement', 'Your monthly account statement is now available for download.', 'STATEMENT', 'UNREAD'),
+          ('notif-004', 'user-002', 'Welcome to Mako Bank!', 'Thank you for joining Mako Bank. Your account has been successfully created.', 'INFO', 'READ'),
+          ('notif-005', 'user-003', 'Account Update', 'Your account information has been successfully updated.', 'INFO', 'READ')
+          ON CONFLICT (ID) DO NOTHING;
+          
+          EOF
+          
+          echo "Notifications database seeding completed successfully!"
+      backoffLimit: 3

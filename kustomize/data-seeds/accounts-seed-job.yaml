@@ -1,0 +1,73 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: accounts-db-seed
+  namespace: mako-services
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: seed-accounts-db
+        image: postgres:16
+        env:
+        - name: PGHOST
+          value: "postgres-accounts-postgresql.mako-services.svc.cluster.local"
+        - name: PGPORT
+          value: "5432"
+        - name: PGDATABASE
+          value: "mako_accounts"
+        - name: PGUSER
+          value: "bank"
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-accounts-secret
+              key: password
+        command:
+        - /bin/bash
+        - -c
+        - |
+          echo "Waiting for PostgreSQL to be ready..."
+          until pg_isready -h $PGHOST -p $PGPORT -U $PGUSER; do
+            echo "PostgreSQL is not ready yet. Waiting..."
+            sleep 5
+          done
+          
+          echo "PostgreSQL is ready. Starting accounts data seeding..."
+          
+          # Execute the seed SQL
+          psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE << 'EOF'
+          -- Accounts seed data
+          CREATE TABLE IF NOT EXISTS ACCOUNTS
+          (
+              ID             VARCHAR(36) NOT NULL PRIMARY KEY,
+              ACCOUNT_NUMBER VARCHAR(26) NOT NULL UNIQUE,
+              ACCOUNT_NAME   VARCHAR(255) NOT NULL,
+              USER_ID        VARCHAR(36) NOT NULL,
+              BALANCE        DECIMAL(19, 4) DEFAULT 0.0 NOT NULL,
+              CURRENCY       VARCHAR(10) NOT NULL,
+              ACCOUNT_TYPE   VARCHAR(50) NOT NULL,
+              MONTHLY_FEE    DECIMAL(19, 4) DEFAULT 0.0,
+              INTEREST_RATE  DECIMAL(19, 4) DEFAULT 0.0,
+              CREATION_DATE  TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+              IBAN           VARCHAR(34) NOT NULL UNIQUE,
+              BIC            VARCHAR(11)    DEFAULT 'MAKOPLKRA' NOT NULL,
+              STATUS         VARCHAR(50)    DEFAULT 'ACTIVE' NOT NULL
+          );
+
+          -- Insert sample accounts
+          INSERT INTO ACCOUNTS (ID, ACCOUNT_NUMBER, ACCOUNT_NAME, USER_ID, BALANCE, CURRENCY, ACCOUNT_TYPE, MONTHLY_FEE, INTEREST_RATE, IBAN, BIC, STATUS) VALUES
+          ('account-001', '47291856034729185603472918', 'John Doe - Checking', 'user-001', 5000.0000, 'USD', 'CHECKING', 10.0000, 0.0100, 'US64MAKO47291856034729185603', 'MAKOPLKRA', 'ACTIVE'),
+          ('account-002', '83647291856034729185603829', 'John Doe - Savings', 'user-001', 15000.0000, 'USD', 'SAVINGS', 5.0000, 2.5000, 'US64MAKO83647291856034729185', 'MAKOPLKRA', 'ACTIVE'),
+          ('account-003', '59184736029471836592847363', 'Jane Smith - Checking', 'user-002', 3200.0000, 'USD', 'CHECKING', 10.0000, 0.0100, 'US64MAKO59184736029471836592', 'MAKOPLKRA', 'ACTIVE'),
+          ('account-004', '72849361057284936105728493', 'Bob Johnson - Checking', 'user-003', 7500.0000, 'USD', 'CHECKING', 10.0000, 0.0100, 'US64MAKO72849361057284936105', 'MAKOPLKRA', 'ACTIVE')
+          ON CONFLICT (ID) DO NOTHING;
+          
+          EOF
+          
+          echo "Accounts database seeding completed successfully!"
+      backoffLimit: 3

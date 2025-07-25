@@ -22,6 +22,16 @@ spec:
           user: keycloak
           password: "keycloak"
           database: keycloak
+        extraVolumes:
+        - name: realm-config
+          configMap:
+            name: keycloak-realm-config
+        extraVolumeMounts:
+        - name: realm-config
+          mountPath: /opt/keycloak/data/import
+        extraEnvVars:
+        - name: KEYCLOAK_EXTRA_ARGS
+          value: "--import-realm"
   destination:
     server: https://kubernetes.default.svc
     namespace: keycloak
