@@ -11,6 +11,7 @@ spec:
     metadata:
       labels:
         app: mako-shell
+        tier: frontend
     spec:
       containers:
         - name: mako-shell

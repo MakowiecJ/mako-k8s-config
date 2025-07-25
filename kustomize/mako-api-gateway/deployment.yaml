@@ -20,13 +20,13 @@ spec:
             - containerPort: 8081
           resources:
             requests:
-              memory: "128Mi"
-              cpu: "50m"
-              ephemeral-storage: "200Mi"
+              memory: "64Mi"        # Reduced from 128Mi
+              cpu: "25m"            # Reduced from 50m
+              ephemeral-storage: "100Mi"  # Reduced from 200Mi
             limits:
-              memory: "256Mi"
-              cpu: "200m"
-              ephemeral-storage: "500Mi"
+              memory: "128Mi"       # Reduced from 256Mi
+              cpu: "100m"           # Reduced from 200m
+              ephemeral-storage: "200Mi"  # Reduced from 500Mi
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "gke"

@@ -1,0 +1,64 @@
+# Ultra-low resource optimization for maximum cost efficiency
+# This configuration prioritizes cost over performance
+
+# Backend services - minimal resources
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-service-ultra-low
+spec:
+  template:
+    spec:
+      containers:
+        - name: backend-service
+          resources:
+            requests:
+              memory: "64Mi"    # Reduced from 128Mi
+              cpu: "25m"        # Reduced from 50m
+              ephemeral-storage: "100Mi"  # Reduced from 200Mi
+            limits:
+              memory: "128Mi"   # Reduced from 256Mi  
+              cpu: "100m"       # Reduced from 200m
+              ephemeral-storage: "200Mi"  # Reduced from 500Mi
+
+---
+# Frontend services - absolute minimum
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-service-ultra-low
+spec:
+  template:
+    spec:
+      containers:
+        - name: frontend-service
+          resources:
+            requests:
+              memory: "16Mi"    # Reduced from 32Mi
+              cpu: "10m"        # Reduced from 25m
+              ephemeral-storage: "50Mi"   # Reduced from 100Mi
+            limits:
+              memory: "32Mi"    # Reduced from 64Mi
+              cpu: "50m"        # Reduced from 100m
+              ephemeral-storage: "100Mi"  # Reduced from 200Mi
+
+---
+# Service Registry - shared resource
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-registry-ultra-low
+spec:
+  template:
+    spec:
+      containers:
+        - name: service-registry
+          resources:
+            requests:
+              memory: "96Mi"    # Eureka needs a bit more
+              cpu: "25m"
+              ephemeral-storage: "100Mi"
+            limits:
+              memory: "192Mi"
+              cpu: "100m"
+              ephemeral-storage: "200Mi"

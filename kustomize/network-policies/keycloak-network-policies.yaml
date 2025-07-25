@@ -1,0 +1,78 @@
+# Network Policies for Keycloak
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: keycloak-network-policy
+  namespace: keycloak
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: keycloak
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  # Allow traffic from frontend services
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: mako-frontend
+    ports:
+    - protocol: TCP
+      port: 8080
+  # Allow traffic from backend services
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: mako-services
+    ports:
+    - protocol: TCP
+      port: 8080
+  # Allow traffic from GCE Load Balancer
+  - from: []
+    ports:
+    - protocol: TCP
+      port: 8080
+  egress:
+  # Allow access to PostgreSQL
+  - to:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: postgresql
+    ports:
+    - protocol: TCP
+      port: 5432
+  # Allow DNS resolution
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53
+  # Allow HTTPS for external identity providers if needed
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 443
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: postgres-keycloak-network-policy
+  namespace: keycloak
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: postgresql
+  policyTypes:
+  - Ingress
+  ingress:
+  # Allow access from Keycloak
+  - from:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: keycloak
+    ports:
+    - protocol: TCP
+      port: 5432

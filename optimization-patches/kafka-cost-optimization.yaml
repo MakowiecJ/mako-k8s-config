@@ -1,0 +1,78 @@
+# Alternative: Use Google Cloud Pub/Sub instead of self-hosted Kafka
+# This eliminates the need for Kafka cluster entirely, saving significant costs
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pubsub-config
+  namespace: mako-services
+data:
+  # Google Cloud Pub/Sub configuration
+  project-id: "mako-bank"
+  topic-prefix: "mako-"
+  subscription-prefix: "mako-sub-"
+  
+  # Topics
+  account-events-topic: "mako-account-events"
+  transaction-events-topic: "mako-transaction-events"
+  notification-events-topic: "mako-notification-events"
+
+---
+# If you must keep Kafka, use minimal configuration
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kafka-minimal
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: kafka
+    repoURL: https://charts.bitnami.com/bitnami
+    targetRevision: 22.1.5
+    helm:
+      values: |
+        # Minimal single-node Kafka setup
+        replicaCount: 1
+        
+        # Controller (KRaft mode) - minimal resources
+        controller:
+          replicaCount: 1
+          persistence:
+            enabled: true
+            size: 1Gi              # Reduced from 2Gi
+            storageClass: "standard"  # Use cheaper storage
+          resources:
+            requests:
+              memory: "256Mi"      # Reduced from 512Mi
+              cpu: "100m"          # Reduced from 250m
+            limits:
+              memory: "512Mi"      # Reduced from 1Gi
+              cpu: "200m"          # Reduced from 500m
+        
+        # Disable broker (use controller only)
+        broker:
+          replicaCount: 0
+        
+        # Disable Zookeeper
+        zookeeper:
+          enabled: false
+        
+        # Minimal JVM settings
+        heapOpts: "-Xmx256m -Xms256m"
+        
+        # Disable all metrics and monitoring
+        metrics:
+          kafka:
+            enabled: false
+          jmx:
+            enabled: false
+            
+        # Disable TLS/Security for cost savings (dev environment)
+        auth:
+          clientProtocol: plaintext
+          interBrokerProtocol: plaintext
+          
+        # Aggressive log retention for space savings
+        logRetentionHours: 24        # Reduce from default 168 hours
+        logSegmentBytes: 10485760    # 10MB segments

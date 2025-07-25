@@ -1,0 +1,59 @@
+# Network Policies for frontend services
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: mako-frontend-services-network-policy
+  namespace: mako-frontend
+spec:
+  podSelector:
+    matchLabels:
+      tier: frontend
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  # Allow traffic from GCE Load Balancer (no specific selector needed)
+  - from: []
+    ports:
+    - protocol: TCP
+      port: 4200  # Shell
+    - protocol: TCP
+      port: 4201  # Dashboard
+    - protocol: TCP
+      port: 4202  # Accounts
+    - protocol: TCP
+      port: 4203  # Transactions
+    - protocol: TCP
+      port: 4204  # Users
+  egress:
+  # Allow access to backend API Gateway
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: mako-services
+      podSelector:
+        matchLabels:
+          app: mako-api-gateway
+    ports:
+    - protocol: TCP
+      port: 8081
+  # Allow access to Keycloak
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: keycloak
+    ports:
+    - protocol: TCP
+      port: 80
+  # Allow DNS resolution
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53
+  # Allow HTTPS for external dependencies (CDNs, etc.)
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 443

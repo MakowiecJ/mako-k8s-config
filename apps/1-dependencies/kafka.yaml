@@ -11,18 +11,51 @@ spec:
     targetRevision: 22.1.5
     helm:
       values: |
-        zookeeper:
-          persistence:
-            enabled: true
-            size: 1Gi
+        # Security and authentication
+        auth:
+          clientProtocol: plaintext
+          interBrokerProtocol: plaintext
+        
+        # Controller (KRaft mode) configuration
         controller:
+          replicaCount: 1
           persistence:
             enabled: true
-            size: 1Gi
+            size: 2Gi
+            storageClass: "standard-rwo"
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+        
+        # Broker configuration
         broker:
+          replicaCount: 1
           persistence:
             enabled: true
-            size: 1Gi
+            size: 2Gi
+            storageClass: "standard-rwo"
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+          
+        # Zookeeper configuration (legacy mode)
+        zookeeper:
+          enabled: false  # Using KRaft mode instead
+        
+        # Metrics and monitoring
+        metrics:
+          kafka:
+            enabled: false  # Enable if you have Prometheus
+          jmx:
+            enabled: false
   destination:
     server: https://kubernetes.default.svc
     namespace: kafka

@@ -1,0 +1,162 @@
+# Network Policies for backend services
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: mako-backend-services-network-policy
+  namespace: mako-services
+spec:
+  podSelector:
+    matchLabels:
+      tier: backend
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  # Allow traffic from API Gateway
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: mako-services
+      podSelector:
+        matchLabels:
+          app: mako-api-gateway
+    ports:
+    - protocol: TCP
+      port: 8083  # Accounts
+    - protocol: TCP
+      port: 8084  # Transactions  
+    - protocol: TCP
+      port: 8085  # Users
+    - protocol: TCP
+      port: 8086  # Notifications
+  # Allow traffic from frontend namespace
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: mako-frontend
+    ports:
+    - protocol: TCP
+      port: 8081  # API Gateway
+  egress:
+  # Allow access to databases
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: mako-db
+    ports:
+    - protocol: TCP
+      port: 5432
+  # Allow access to Kafka
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: kafka
+    ports:
+    - protocol: TCP
+      port: 9092
+  # Allow access to Service Registry
+  - to:
+    - podSelector:
+        matchLabels:
+          app: mako-service-registry
+    ports:
+    - protocol: TCP
+      port: 8761
+  # Allow DNS resolution
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53
+  # Allow HTTPS for external APIs
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 443
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: mako-api-gateway-network-policy
+  namespace: mako-services
+spec:
+  podSelector:
+    matchLabels:
+      app: mako-api-gateway
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  # Allow traffic from frontend
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: mako-frontend
+    ports:
+    - protocol: TCP
+      port: 8081
+  egress:
+  # Allow access to backend services
+  - to:
+    - podSelector:
+        matchLabels:
+          tier: backend
+    ports:
+    - protocol: TCP
+      port: 8083
+    - protocol: TCP
+      port: 8084
+    - protocol: TCP
+      port: 8085
+    - protocol: TCP
+      port: 8086
+  # Allow access to Service Registry
+  - to:
+    - podSelector:
+        matchLabels:
+          app: mako-service-registry
+    ports:
+    - protocol: TCP
+      port: 8761
+  # Allow DNS and external access
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 443
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: mako-database-network-policy
+  namespace: mako-db
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  ingress:
+  # Allow access from mako-services namespace
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: mako-services
+    ports:
+    - protocol: TCP
+      port: 5432
+  # Allow access from data-seeds jobs
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: mako-services
+      podSelector:
+        matchLabels:
+          component: data-seed
+    ports:
+    - protocol: TCP
+      port: 5432

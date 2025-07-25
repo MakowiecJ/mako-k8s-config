@@ -1,0 +1,85 @@
+# Single PostgreSQL instance for all services to save costs
+# Instead of separate databases, use one database with multiple schemas
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgres-consolidated
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: postgresql
+    repoURL: https://charts.bitnami.com/bitnami
+    targetRevision: 12.12.10
+    helm:
+      values: |
+        # Single database with multiple schemas
+        auth:
+          database: mako_bank_consolidated
+          username: mako_user
+          existingSecret: postgres-consolidated-credentials
+          secretKeys:
+            adminPasswordKey: postgres-password
+            userPasswordKey: user-password
+            
+        # Minimal resources for cost savings
+        primary:
+          persistence:
+            enabled: true
+            size: 2Gi              # Single larger disk instead of multiple
+            storageClass: "standard"  # Use cheaper storage class
+          resources:
+            requests:
+              memory: "256Mi"      # Minimal memory
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "300m"
+              
+        # Disable metrics and monitoring
+        metrics:
+          enabled: false
+          
+        # Initialize with all schemas
+        initdb:
+          scripts:
+            01-init-schemas.sql: |
+              -- Create all schemas in single database
+              CREATE SCHEMA IF NOT EXISTS accounts;
+              CREATE SCHEMA IF NOT EXISTS transactions;
+              CREATE SCHEMA IF NOT EXISTS users;
+              CREATE SCHEMA IF NOT EXISTS notifications;
+              CREATE SCHEMA IF NOT EXISTS keycloak;
+              
+              -- Grant permissions
+              GRANT ALL PRIVILEGES ON SCHEMA accounts TO mako_user;
+              GRANT ALL PRIVILEGES ON SCHEMA transactions TO mako_user;
+              GRANT ALL PRIVILEGES ON SCHEMA users TO mako_user;
+              GRANT ALL PRIVILEGES ON SCHEMA notifications TO mako_user;
+              GRANT ALL PRIVILEGES ON SCHEMA keycloak TO mako_user;
+              
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: mako-db
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+
+---
+# Updated connection strings for all services
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: database-connections
+  namespace: mako-services
+data:
+  # All services use same database with different schemas
+  accounts-db-url: "jdbc:postgresql://postgres-consolidated-postgresql.mako-db.svc.cluster.local:5432/mako_bank_consolidated?currentSchema=accounts"
+  transactions-db-url: "jdbc:postgresql://postgres-consolidated-postgresql.mako-db.svc.cluster.local:5432/mako_bank_consolidated?currentSchema=transactions"
+  users-db-url: "jdbc:postgresql://postgres-consolidated-postgresql.mako-db.svc.cluster.local:5432/mako_bank_consolidated?currentSchema=users"
+  notifications-db-url: "jdbc:postgresql://postgres-consolidated-postgresql.mako-db.svc.cluster.local:5432/mako_bank_consolidated?currentSchema=notifications"
+  keycloak-db-url: "jdbc:postgresql://postgres-consolidated-postgresql.mako-db.svc.cluster.local:5432/mako_bank_consolidated?currentSchema=keycloak"

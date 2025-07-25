@@ -1,0 +1,90 @@
+# Ultra-aggressive HPA configuration for maximum cost savings
+# Scales down quickly and scales up only when absolutely necessary
+
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: mako-api-gateway-ultra-hpa
+  namespace: mako-services
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: mako-api-gateway
+  minReplicas: 0  # Scale to zero when not in use (requires VPA or manual intervention to start)
+  maxReplicas: 2  # Reduced from 3
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 90  # Very high threshold before scaling
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 90
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 180  # Wait longer before scaling up
+      policies:
+      - type: Pods
+        value: 1
+        periodSeconds: 60  # Add 1 pod per minute max
+    scaleDown:
+      stabilizationWindowSeconds: 60   # Scale down quickly
+      policies:
+      - type: Percent
+        value: 100  # Can scale down to 0 immediately
+        periodSeconds: 15
+
+---
+# Backend services - minimal scaling
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: mako-backend-ultra-hpa
+  namespace: mako-services
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: mako-accounts  # Apply to each backend service
+  minReplicas: 0
+  maxReplicas: 1  # Never scale beyond 1 replica
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 95  # Extremely high threshold
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 300  # 5 minutes before scaling up
+    scaleDown:
+      stabilizationWindowSeconds: 30   # Scale down after 30 seconds
+
+---
+# Frontend - consolidated deployment HPA
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: mako-frontend-consolidated-hpa
+  namespace: mako-frontend
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: mako-frontend-consolidated
+  minReplicas: 1  # Keep at least 1 for user access
+  maxReplicas: 1  # Never scale beyond 1
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 95

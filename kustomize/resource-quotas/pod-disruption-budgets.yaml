@@ -1,0 +1,83 @@
+# Pod Disruption Budgets to maintain availability during node updates/maintenance
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mako-api-gateway-pdb
+  namespace: mako-services
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: mako-api-gateway
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mako-users-pdb
+  namespace: mako-services
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: mako-users
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mako-accounts-pdb
+  namespace: mako-services
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: mako-accounts
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mako-transactions-pdb
+  namespace: mako-services
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: mako-transactions
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mako-notifications-pdb
+  namespace: mako-services
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: mako-notifications
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mako-service-registry-pdb
+  namespace: mako-services
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: mako-service-registry
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mako-shell-pdb
+  namespace: mako-frontend
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: mako-shell

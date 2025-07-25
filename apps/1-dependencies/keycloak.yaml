@@ -13,14 +13,17 @@ spec:
       values: |
         auth:
           adminUser: admin
-          adminPassword: "admin"
+          existingSecret: keycloak-admin-credentials
+          secretKeys:
+            adminPasswordKey: admin-password
         postgresql:
           enabled: false
         externalDatabase:
           host: postgres-keycloak-postgresql.keycloak.svc.cluster.local
           port: 5432
           user: keycloak
-          password: "keycloak"
+          existingSecret: postgres-keycloak-postgresql
+          existingSecretPasswordKey: password
           database: keycloak
         extraVolumes:
         - name: realm-config
