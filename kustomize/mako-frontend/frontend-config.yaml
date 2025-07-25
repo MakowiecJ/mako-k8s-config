@@ -6,4 +6,3 @@ metadata:
 spec:
   redirectToHttps:
     enabled: true
-  sslPolicy: restrictive-ssl-policy
