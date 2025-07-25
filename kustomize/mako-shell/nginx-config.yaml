@@ -68,28 +68,11 @@ data:
                 proxy_set_header X-Forwarded-Proto $scheme;
             }
 
-            # Proxy to users microfrontend
-            location /users/ {
-                proxy_pass http://mako-users-web.mako-frontend.svc.cluster.local:4204/;
-                proxy_set_header Host $host;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_set_header X-Forwarded-Proto $scheme;
+            # Handle JavaScript files and Angular routing
+            location ~* \.(js|html|htm)$ {
+                try_files $uri $uri/ /index.html;
             }
 
-            # Handle remoteEntry.js for Module Federation
-            location ~ /remoteEntry\.js$ {
-                add_header Content-Type application/javascript always;
-                try_files $uri =404;
-            }
-
-            # Handle all JavaScript files
-            location ~ \.js$ {
-                add_header Content-Type application/javascript always;
-                try_files $uri =404;
-            }
-
-            # Handle Angular routing
             location / {
                 try_files $uri $uri/ /index.html;
             }
