@@ -37,7 +37,7 @@ spec:
           value: "--import-realm"
   destination:
     server: https://kubernetes.default.svc
-    namespace: keycloak
+    namespace: argocd
   syncPolicy:
     automated:
       prune: true

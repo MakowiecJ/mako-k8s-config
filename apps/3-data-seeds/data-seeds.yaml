@@ -13,7 +13,7 @@ spec:
     path: kustomize/data-seeds
   destination:
     server: https://kubernetes.default.svc
-    namespace: mako-services
+    namespace: argocd
   syncPolicy:
     automated:
       prune: true

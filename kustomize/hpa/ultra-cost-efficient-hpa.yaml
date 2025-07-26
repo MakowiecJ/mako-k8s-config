@@ -5,7 +5,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: mako-api-gateway-ultra-hpa
-  namespace: mako-services
+  namespace: argocd
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
@@ -46,7 +46,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: mako-backend-ultra-hpa
-  namespace: mako-services
+  namespace: argocd
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
@@ -73,7 +73,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: mako-frontend-consolidated-hpa
-  namespace: mako-frontend
+  namespace: argocd
 spec:
   scaleTargetRef:
     apiVersion: apps/v1

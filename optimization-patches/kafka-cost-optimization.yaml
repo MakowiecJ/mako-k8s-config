@@ -5,7 +5,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: pubsub-config
-  namespace: mako-services
+  namespace: argocd
 data:
   # Google Cloud Pub/Sub configuration
   project-id: "mako-bank"

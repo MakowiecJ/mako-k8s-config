@@ -3,7 +3,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: mako-frontend-services-network-policy
-  namespace: mako-frontend
+  namespace: argocd
 spec:
   podSelector:
     matchLabels:

@@ -5,7 +5,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: mako-api-gateway-hpa
-  namespace: mako-services
+  namespace: argocd
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
@@ -45,7 +45,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: mako-users-hpa
-  namespace: mako-services
+  namespace: argocd
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
@@ -77,7 +77,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: mako-accounts-hpa
-  namespace: mako-services
+  namespace: argocd
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
@@ -104,7 +104,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: mako-transactions-hpa
-  namespace: mako-services
+  namespace: argocd
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
@@ -131,7 +131,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: mako-notifications-hpa
-  namespace: mako-services
+  namespace: argocd
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
@@ -158,7 +158,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: mako-service-registry-hpa
-  namespace: mako-services
+  namespace: argocd
 spec:
   scaleTargetRef:
     apiVersion: apps/v1

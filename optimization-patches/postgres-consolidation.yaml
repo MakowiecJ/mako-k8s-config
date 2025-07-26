@@ -75,7 +75,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: database-connections
-  namespace: mako-services
+  namespace: argocd
 data:
   # All services use same database with different schemas
   accounts-db-url: "jdbc:postgresql://postgres-consolidated-postgresql.mako-db.svc.cluster.local:5432/mako_bank_consolidated?currentSchema=accounts"

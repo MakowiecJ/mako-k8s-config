@@ -3,7 +3,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: mako-backend-services-network-policy
-  namespace: mako-services
+  namespace: argocd
 spec:
   podSelector:
     matchLabels:
@@ -80,7 +80,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: mako-api-gateway-network-policy
-  namespace: mako-services
+  namespace: argocd
 spec:
   podSelector:
     matchLabels:

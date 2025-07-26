@@ -17,7 +17,7 @@ spec:
             backend:
               service:
                 name: mako-shell
-                namespace: mako-frontend
+                namespace: argocd
                 port:
                   number: 4200
     - host: api.mako-bank.com
@@ -28,7 +28,7 @@ spec:
             backend:
               service:
                 name: mako-api-gateway
-                namespace: mako-services
+                namespace: argocd
                 port:
                   number: 8081
     - host: keycloak.mako-bank.com
@@ -39,7 +39,7 @@ spec:
             backend:
               service:
                 name: keycloak
-                namespace: mako-services
+                namespace: argocd
                 port:
                   number: 80
     - host: argocd.mako-bank.com
@@ -61,7 +61,7 @@ spec:
             backend:
               service:
                 name: mako-dashboard-web
-                namespace: mako-frontend
+                namespace: argocd
                 port:
                   number: 4201
     - host: transactions.mako-bank.com
@@ -72,7 +72,7 @@ spec:
             backend:
               service:
                 name: mako-transactions-web
-                namespace: mako-services
+                namespace: argocd
                 port:
                   number: 4203
     - host: accounts.mako-bank.com
@@ -83,7 +83,7 @@ spec:
             backend:
               service:
                 name: mako-accounts-web
-                namespace: mako-services
+                namespace: argocd
                 port:
                   number: 4202
     - host: users.mako-bank.com
@@ -94,6 +94,6 @@ spec:
             backend:
               service:
                 name: mako-users-web
-                namespace: mako-services
+                namespace: argocd
                 port:
                   number: 4204

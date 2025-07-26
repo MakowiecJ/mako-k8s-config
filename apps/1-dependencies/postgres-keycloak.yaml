@@ -21,7 +21,7 @@ spec:
             size: 1Gi
   destination:
     server: https://kubernetes.default.svc
-    namespace: keycloak
+    namespace: mako-db
   syncPolicy:
     automated:
       prune: true

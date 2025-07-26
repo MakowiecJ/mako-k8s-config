@@ -7,7 +7,7 @@ resources:
 - transactions-seed-job.yaml
 - notifications-seed-job.yaml
 
-namespace: mako-services
+namespace: argocd
 
 commonLabels:
   app.kubernetes.io/name: mako-data-seeds

@@ -3,7 +3,7 @@ apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: mako-api-gateway-pdb
-  namespace: mako-services
+  namespace: argocd
 spec:
   minAvailable: 1
   selector:
@@ -15,7 +15,7 @@ apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: mako-users-pdb
-  namespace: mako-services
+  namespace: argocd
 spec:
   minAvailable: 1
   selector:
@@ -27,7 +27,7 @@ apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: mako-accounts-pdb
-  namespace: mako-services
+  namespace: argocd
 spec:
   minAvailable: 1
   selector:
@@ -39,7 +39,7 @@ apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: mako-transactions-pdb
-  namespace: mako-services
+  namespace: argocd
 spec:
   minAvailable: 1
   selector:
@@ -51,7 +51,7 @@ apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: mako-notifications-pdb
-  namespace: mako-services
+  namespace: argocd
 spec:
   minAvailable: 1
   selector:
@@ -63,7 +63,7 @@ apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: mako-service-registry-pdb
-  namespace: mako-services
+  namespace: argocd
 spec:
   minAvailable: 1
   selector:
@@ -75,7 +75,7 @@ apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: mako-shell-pdb
-  namespace: mako-frontend
+  namespace: argocd
 spec:
   minAvailable: 1
   selector:
