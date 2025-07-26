@@ -31,6 +31,6 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               value: "gke"
             - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
-              value: "http://mako-service-registry.mako-services.svc.cluster.local:8761/eureka/"
+              value: "http://mako-service-registry.argocd.svc.cluster.local:8761/eureka/"
             - name: KEYCLOAK_REALM_URL
-              value: "http://keycloak.keycloak.svc.cluster.local:8080"
+              value: "http://keycloak.argocd.svc.cluster.local:80"

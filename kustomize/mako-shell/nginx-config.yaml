@@ -34,7 +34,7 @@ data:
 
             # Proxy to dashboard microfrontend
             location /dashboard/ {
-                proxy_pass http://mako-dashboard-web.mako-frontend.svc.cluster.local:4201/;
+                proxy_pass http://mako-dashboard-web.argocd.svc.cluster.local:4201/;
                 proxy_set_header Host $host;
                 proxy_set_header X-Real-IP $remote_addr;
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -43,7 +43,7 @@ data:
 
             # Proxy to accounts microfrontend
             location /accounts/ {
-                proxy_pass http://mako-accounts-web.mako-frontend.svc.cluster.local:4202/;
+                proxy_pass http://mako-accounts-web.argocd.svc.cluster.local:4202/;
                 proxy_set_header Host $host;
                 proxy_set_header X-Real-IP $remote_addr;
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -52,7 +52,7 @@ data:
 
             # Proxy to transactions microfrontend
             location /transactions/ {
-                proxy_pass http://mako-transactions-web.mako-frontend.svc.cluster.local:4203/;
+                proxy_pass http://mako-transactions-web.argocd.svc.cluster.local:4203/;
                 proxy_set_header Host $host;
                 proxy_set_header X-Real-IP $remote_addr;
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -61,7 +61,7 @@ data:
 
             # Proxy to users microfrontend
             location /users/ {
-                proxy_pass http://mako-users-web.mako-frontend.svc.cluster.local:4204/;
+                proxy_pass http://mako-users-web.argocd.svc.cluster.local:4204/;
                 proxy_set_header Host $host;
                 proxy_set_header X-Real-IP $remote_addr;
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -79,7 +79,7 @@ data:
 
             # Proxy API calls to the backend - FIXED FOR KUBERNETES
             location /api/ {
-                proxy_pass http://mako-api-gateway.mako-services.svc.cluster.local:8081/;
+                proxy_pass http://mako-api-gateway.argocd.svc.cluster.local:8081/;
                 proxy_set_header Host $host;
                 proxy_set_header X-Real-IP $remote_addr;
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
