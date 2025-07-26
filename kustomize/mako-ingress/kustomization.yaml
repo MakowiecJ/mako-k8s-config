@@ -4,6 +4,4 @@ kind: Kustomization
 namespace: argocd
 
 resources:
-  - ingress.yaml
-  - managed-certificate.yaml
-  - frontend-config.yaml
+- mako-ingress

@@ -1,0 +1,99 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mako-frontend-shell
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.global-static-ip-name: "mako-ingress-ip-global"
+    networking.gke.io/managed-certificates: "mako-bank-ssl-cert"
+    networking.gke.io/v1beta1.FrontendConfig: "mako-frontend-http-to-https"
+spec:
+  rules:
+    - host: mako-bank.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mako-shell
+                namespace: mako-frontend
+                port:
+                  number: 4200
+    - host: api.mako-bank.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mako-api-gateway
+                namespace: mako-services
+                port:
+                  number: 8081
+    - host: keycloak.mako-bank.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak
+                namespace: mako-services
+                port:
+                  number: 80
+    - host: argocd.mako-bank.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: argocd-server
+                namespace: argocd
+                port:
+                  number: 80
+    - host: dashboard.mako-bank.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mako-dashboard-web
+                namespace: mako-frontend
+                port:
+                  number: 4201
+    - host: transactions.mako-bank.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mako-transactions-web
+                namespace: mako-services
+                port:
+                  number: 4203
+    - host: accounts.mako-bank.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mako-accounts-web
+                namespace: mako-services
+                port:
+                  number: 4202
+    - host: users.mako-bank.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mako-users-web
+                namespace: mako-services
+                port:
+                  number: 4204
