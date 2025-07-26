@@ -4,4 +4,4 @@ kind: Kustomization
 namespace: argocd
 
 resources:
-- mako-ingress
+- mako-ingress.yaml
