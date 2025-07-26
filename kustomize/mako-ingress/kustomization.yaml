@@ -5,3 +5,4 @@ namespace: argocd
 
 resources:
 - mako-ingress.yaml
+- frontend-config.yaml
